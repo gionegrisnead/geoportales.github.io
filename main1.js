@@ -50,7 +50,7 @@ var baseMaps = {
 };
 
 // CARGAR GEOJSON
-fetch('data/aoi1P.geojson')
+fetch('aoi1P.geojson')
 .then(function(response) {
     return response.json();
 })
@@ -78,4 +78,5 @@ fetch('data/aoi1P.geojson')
 })
 .catch(function(error) {
     console.log("Error cargando GeoJSON:", error);
+
 });
