@@ -16,18 +16,6 @@ var mapabase1 = L.tileLayer(
     }
 ).addTo(mapa1);
 
-// MAPA BASE MAPBOX
-var mapabase2 = L.tileLayer(
-    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-    {
-        attribution: '© Mapbox © OpenStreetMap',
-        tileSize: 512,
-        zoomOffset: -1,
-        maxZoom: 20,
-        id: 'mapbox/streets-v11',
-        accessToken: 'pk.eyJ1IjoiZ2lvbmVncmlzbmVhZCIsImEiOiJjbG5lb3hkZjgwYjYwMmpuNTdjZmhpeGhvIn0.9FgP2sPU8iUZHEd_23jKLg'
-    }
-);
 
 // WMS DE PRUEBA
 var capaprueba = L.tileLayer.wms(
@@ -45,8 +33,7 @@ var capaAOI;
 
 // BASEMAPS PARA CONTROL
 var baseMaps = {
-    "OpenStreetMap": mapabase1,
-    "Mapbox": mapabase2
+    "OpenStreetMap": mapabase1
 };
 
 // CARGAR GEOJSON
@@ -78,5 +65,4 @@ fetch('aoi1P.geojson')
 })
 .catch(function(error) {
     console.log("Error cargando GeoJSON:", error);
-
 });
