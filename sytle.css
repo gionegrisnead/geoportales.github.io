@@ -1,0 +1,44 @@
+body {
+    background-image: url(https://images.unsplash.com/photo-1703850827351-a1be4d85a095);
+    height: 162vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+img {    
+    height: 70px;
+    width: 90px;
+}
+
+h1 {
+    background-color: gray;
+    padding: 10px;
+    border: 2px solid black;
+    margin: 10px;
+    text-align: center;
+}
+
+.contenedor-princ {
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;
+
+}
+
+.contenedor-login {
+    background-color: rgb(185, 36, 36);
+    height: 90px;
+    width: 400px;
+
+}
+
+button {
+    background-color: rgb(185, 36, 36);
+    color: white;
+    border: none;
+    height: 40px;
+    width: 85px;
+    font-weight: bold;
+    border-radius: 5px;
+
+}
