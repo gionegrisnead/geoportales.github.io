@@ -1,5 +1,4 @@
 
-
 /////////////////////////////////////////////////////////////////////////////
 
 // CREAR OBJETO MAPA
@@ -16,7 +15,6 @@ var mapabase1 = L.tileLayer(
     }
 ).addTo(mapa1);
 
-
 // WMS DE PRUEBA
 var capaprueba = L.tileLayer.wms(
     "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
@@ -28,20 +26,34 @@ var capaprueba = L.tileLayer.wms(
     }
 );
 
-// OBJETO PARA GUARDAR EL GEOJSON
+// OBJETOS PARA GUARDAR GEOJSON
 var capaAOI;
+var capadpto;
 
-// BASEMAPS PARA CONTROL
+// VARIABLE PARA GUARDAR DATOS ORIGINALES
+var datosDpto;
+
+// BASEMAPS
 var baseMaps = {
     "OpenStreetMap": mapabase1
 };
 
-// CARGAR GEOJSON
+// OVERLAYS VACIO
+var overlays = {
+    "Radar": capaprueba
+};
+
+// CONTROL DE CAPAS
+var controlCapas = L.control.layers(baseMaps, overlays).addTo(mapa1);
+
+
+// ===============================
+// CARGAR GEOJSON AOI
+// ===============================
+
 fetch('aoi1P.geojson')
-.then(function(response) {
-    return response.json();
-})
-.then(function(data) {
+.then(response => response.json())
+.then(data => {
 
     capaAOI = L.geoJSON(data, {
         style: {
@@ -53,16 +65,82 @@ fetch('aoi1P.geojson')
 
     mapa1.fitBounds(capaAOI.getBounds());
 
-    // OVERLAYS
-    var overlays = {
-        "Radar": capaprueba,
-        "AOI": capaAOI
-    };
-
-    // CONTROL DE CAPAS
-    L.control.layers(baseMaps, overlays).addTo(mapa1);
+    controlCapas.addOverlay(capaAOI, "AOI");
 
 })
 .catch(function(error) {
-    console.log("Error cargando GeoJSON:", error);
+    console.log("Error cargando AOI:", error);
 });
+
+
+// ===============================
+// CARGAR GEOJSON DPTO
+// ===============================
+
+fetch('dpto_agm_2025.geojson')
+.then(response => response.json())
+.then(data => {
+
+    capadpto = L.geoJSON(data, {
+        style: {
+            color: "blue",
+            weight: 2,
+            fillOpacity: 0.1
+        }
+    }).addTo(mapa1);
+
+    controlCapas.addOverlay(capadpto, "Departamentos");
+
+// ===============================
+    // GENERAR LISTA DE FILTROS
+    // ===============================
+
+    var valores = [];
+
+    data.features.forEach(function(f) {
+        
+        var dpto = f.properties.DPTO_DESC;
+
+        if(!valores.includes(dpto)){
+            valores.push(dpto);
+        }
+
+    });
+
+    valores.sort();
+
+    var select = document.getElementById("filtro-dpto");
+
+    valores.forEach(function(v) {
+
+        var option = document.createElement("option");
+
+        option.value = v;
+        option.text = v;
+
+        select.appendChild(option);
+
+    });
+
+
+// ===============================
+// EVENTO DE FILTRO
+// ===============================
+
+select.addEventListener("change",function(){
+
+        var valor = this.value;
+
+        capadpto.clearLayers();
+
+        datosDpto.features.forEach(function(feature){
+
+            if(valor === "todos" || feature.properties.DPTO_DESC === valor){
+
+                capadpto.addData(feature);
+
+            }
+        });
+    });
+})
+.catch(error => console.log("Error DPTO:",error));

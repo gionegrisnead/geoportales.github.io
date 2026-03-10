@@ -2,6 +2,25 @@
     background-color: rgb(22, 1, 1);
 }
 
+
+.panel-filtros{
+position:absolute;
+top:120px;
+left:20px;
+z-index:1000;
+background:white;
+padding:15px;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.3);
+width:200px;
+}
+
+.panel-filtros select{
+width:100%;
+padding:5px;
+margin-top:5px;
+}
+
 #contenedor-map {
     border-style: solid;
     border: 0.5px;
