@@ -89,58 +89,9 @@ fetch('dpto_agm_2025.geojson')
         }
     }).addTo(mapa1);
 
-    controlCapas.addOverlay(capadpto, "Departamentos");
+    controlCapas.addOverlay(capadpto, "Departamentos")
 
-// ===============================
-    // GENERAR LISTA DE FILTROS
-    // ===============================
-
-    var valores = [];
-
-    data.features.forEach(function(f) {
-        
-        var dpto = f.properties.DPTO_DESC;
-
-        if(!valores.includes(dpto)){
-            valores.push(dpto);
-        }
-
-    });
-
-    valores.sort();
-
-    var select = document.getElementById("filtro-dpto");
-
-    valores.forEach(function(v) {
-
-        var option = document.createElement("option");
-
-        option.value = v;
-        option.text = v;
-
-        select.appendChild(option);
-
-    });
-
-
-// ===============================
-// EVENTO DE FILTRO
-// ===============================
-
-select.addEventListener("change",function(){
-
-        var valor = this.value;
-
-        capadpto.clearLayers();
-
-        datosDpto.features.forEach(function(feature){
-
-            if(valor === "todos" || feature.properties.DPTO_DESC === valor){
-
-                capadpto.addData(feature);
-
-            }
-        });
-    });
-})
-.catch(error => console.log("Error DPTO:",error));
+    })
+.catch(function(error) {
+    console.log("Error cargando AOI:", error);
+});
