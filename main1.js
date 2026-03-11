@@ -30,8 +30,9 @@ var capaprueba = L.tileLayer.wms(
 var capaAOI;
 var capadpto;
 
-// VARIABLE PARA GUARDAR DATOS ORIGINALES
+
 var datosDpto;
+var capa_arroz;
 
 // BASEMAPS
 var baseMaps = {
@@ -90,6 +91,29 @@ fetch('dpto_agm_2025.geojson')
     }).addTo(mapa1);
 
     controlCapas.addOverlay(capadpto, "Departamentos")
+
+    })
+.catch(function(error) {
+    console.log("Error cargando AOI:", error);
+});
+
+// ===============================
+// CARGAR GEOJSON arroz
+// ===============================
+
+fetch('capa_arroz.geojson')
+.then(response => response.json())
+.then(data => {
+
+    capa_arroz = L.geoJSON(data, {
+        style: {
+            color: "green",
+            weight: 2,
+            fillOpacity: 0.1
+        }
+    }).addTo(mapa1);
+
+    controlCapas.addOverlay(capa_arroz, "Arroz")
 
     })
 .catch(function(error) {
